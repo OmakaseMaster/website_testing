@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Search Results</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <style>
+    body {
+      padding: 40px;
+      background: white;
+      font-family: 'Nunito', sans-serif;
+    }
+
+    h1 {
+      color: #226E93;
+    }
+
+    .result {
+      margin: 20px 0;
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .result a {
+      font-weight: bold;
+      color: #226E93;
+      text-decoration: none;
+    }
+
+    .result p {
+      margin: 5px 0 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Search Results</h1>
+  <div id="results"></div>
+
+  <script>
+    const query = new URLSearchParams(window.location.search).get("query")?.toLowerCase() || "";
+    const resultsContainer = document.getElementById("results");
+
+    // Mock content index – later we can auto-generate or expand
+    const content = [
+      { title: "About", text: "Short bio and background info.", url: "../index.html#about" },
+      { title: "CV", text: "Curriculum vitae and experience.", url: "../index.html#cv" },
+      { title: "Research", text: "Projects and dissertation.", url: "../index.html#research" },
+      { title: "Publications", text: "List of publications and papers.", url: "../index.html#publications" },
+      { title: "Contact", text: "Email and department address.", url: "../index.html#contact" }
+    ];
+
+    const filtered = content.filter(item =>
+      item.title.toLowerCase().includes(query) ||
+      item.text.toLowerCase().includes(query)
+    );
+
+    if (filtered.length === 0) {
+      resultsContainer.innerHTML = `<p>No results found for "<strong>${query}</strong>"</p>`;
+    } else {
+      filtered.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "result";
+        div.innerHTML = `<a href="${item.url}">${item.title}</a><p>${item.text}</p>`;
+        resultsContainer.appendChild(div);
+      });
+    }
+  </script>
+</body>
+</html>
